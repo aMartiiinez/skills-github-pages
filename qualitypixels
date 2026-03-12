@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quality Pixels — Professional Photo Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --accent: #c8a96e;
+    --accent2: #e8c98e;
+    --text: #f0ece4;
+    --muted: #888880;
+    --danger: #e05555;
+    --success: #55c49a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: .4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,10,.95), transparent);
+    backdrop-filter: blur(8px);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 900;
+    letter-spacing: -.02em; color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 32px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; transition: color .2s; }
+  nav a:hover { color: var(--accent); }
+  .nav-btn {
+    background: var(--accent); color: #0a0a0a;
+    border: none; padding: 10px 24px; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-weight: 700;
+    font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+    cursor: pointer; transition: background .2s, transform .15s;
+  }
+  .nav-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 120px 48px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,169,110,.08) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,169,110,.04) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 700px; }
+  .hero-tag {
+    display: inline-block; border: 1px solid var(--accent);
+    color: var(--accent); font-size: .75rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 6px 16px; margin-bottom: 28px; border-radius: 2px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -.04em; margin-bottom: 24px;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .hero-desc { font-size: 1.1rem; color: var(--muted); line-height: 1.7; max-width: 500px; margin-bottom: 40px; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: #0a0a0a; border: none;
+    padding: 16px 36px; font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: .9rem; letter-spacing: .06em;
+    text-transform: uppercase; cursor: pointer; border-radius: 2px;
+    transition: all .2s; text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,169,110,.3); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border); padding: 16px 36px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    font-size: .9rem; letter-spacing: .04em; cursor: pointer;
+    border-radius: 2px; transition: all .2s; text-decoration: none; display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── STATS ── */
+  .stats {
+    display: flex; gap: 48px; margin-top: 64px;
+    padding-top: 48px; border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 900; color: var(--accent);
+  }
+  .stat-label { font-size: .8rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── SERVICES ── */
+  section { padding: 100px 48px; }
+  .section-label {
+    font-size: .75rem; font-weight: 600; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900;
+    letter-spacing: -.03em; margin-bottom: 56px;
+  }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px;
+  }
+  .service-card {
+    background: var(--surface); padding: 40px 36px;
+    border: 1px solid var(--border); position: relative;
+    overflow: hidden; transition: border-color .3s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--accent);
+    transform: scaleX(0); transition: transform .3s; transform-origin: left;
+  }
+  .service-card:hover { border-color: rgba(200,169,110,.3); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon { font-size: 2rem; margin-bottom: 20px; }
+  .service-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; margin-bottom: 12px;
+  }
+  .service-desc { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .service-price { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+
+  /* ── SERVICE MULTI-SELECT ── */
+  .service-checkboxes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 520px) { .service-checkboxes { grid-template-columns: 1fr; } }
+  .service-check-item {
+    border: 1px solid var(--border); border-radius: 2px; padding: 12px 14px;
+    cursor: pointer; transition: all .18s; display: flex; align-items: center; gap: 10px;
+    background: var(--surface); user-select: none;
+  }
+  .service-check-item:hover { border-color: rgba(200,169,110,.4); }
+  .service-check-item.selected { border-color: var(--accent); background: rgba(200,169,110,.08); }
+  .service-check-box {
+    width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 2px;
+    flex-shrink: 0; transition: all .15s; font-size: .7rem; display: flex; align-items: center; justify-content: center;
+  }
+  .service-check-item.selected .service-check-box { background: var(--accent); border-color: var(--accent); color: #0a0a0a; }
+  .service-check-label { font-size: .85rem; font-weight: 500; line-height: 1.3; }
+  .service-check-price { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+  .services-selected-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; min-height: 0; }
+  .service-tag {
+    background: rgba(200,169,110,.12); border: 1px solid var(--accent);
+    color: var(--accent); font-size: .75rem; font-weight: 600;
+    padding: 3px 10px; border-radius: 2px; letter-spacing: .04em;
+  }
+
+  /* ── REFERENCES GALLERY ── */
+  #references { background: var(--bg); }
+  .ref-folder-tabs {
+    display: flex; gap: 0; flex-wrap: wrap; margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-folder-tab {
+    background: none; border: none; color: var(--muted);
+    padding: 12px 24px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: .9rem; font-weight: 500; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: all .2s; display: flex; align-items: center; gap: 8px;
+  }
+  .ref-folder-tab:hover { color: var(--text); }
+  .ref-folder-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .ref-folder-tab .folder-count {
+    background: rgba(200,169,110,.15); color: var(--accent);
+    font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+  }
+  .ref-gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 3px;
+  }
+  .ref-img-wrap {
+    position: relative; aspect-ratio: 4/3; overflow: hidden; cursor: pointer;
+    background: var(--surface);
+  }
+  .ref-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .4s cubic-bezier(.16,1,.3,1), filter .3s;
+    filter: brightness(.9);
+  }
+  .ref-img-wrap:hover img { transform: scale(1.06); filter: brightness(1); }
+  .ref-img-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,.55);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .25s;
+  }
+  .ref-img-wrap:hover .ref-img-overlay { opacity: 1; }
+  .ref-img-overlay span { color: #fff; font-size: .8rem; font-weight: 600; letter-spacing: .06em; }
+  .ref-empty {
+    grid-column: 1/-1; text-align: center;
+    color: var(--muted); padding: 64px 0; font-size: .95rem;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,.96); align-items: center; justify-content: center;
+    flex-direction: column;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 92vw; max-height: 82vh; object-fit: contain;
+    border: 1px solid var(--border); border-radius: 2px;
+  }
+  .lightbox-caption {
+    margin-top: 16px; color: var(--muted); font-size: .85rem; letter-spacing: .04em;
+  }
+  .lightbox-close {
+    position: absolute; top: 24px; right: 32px;
+    background: none; border: 1px solid var(--border); color: var(--text);
+    width: 40px; height: 40px; border-radius: 50%; font-size: 1.1rem;
+    cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center;
+  }
+  .lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+  .lightbox-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,.06); border: 1px solid var(--border);
+    color: var(--text); width: 44px; height: 44px; border-radius: 50%;
+    font-size: 1.2rem; cursor: pointer; transition: all .2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lightbox-nav:hover { background: rgba(200,169,110,.15); border-color: var(--accent); }
+  .lightbox-prev { left: 24px; }
+  .lightbox-next { right: 24px; }
+
+  /* ── ADMIN GALLERY ── */
+  .gallery-admin-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
+  @media (max-width: 900px) { .gallery-admin-layout { grid-template-columns: 1fr; } }
+  .folder-sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .folder-sidebar-head {
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+    font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  }
+  .folder-list-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 20px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,.04);
+    transition: background .15s; gap: 8px;
+  }
+  .folder-list-item:hover { background: rgba(255,255,255,.03); }
+  .folder-list-item.active { background: rgba(200,169,110,.08); border-left: 2px solid var(--accent); }
+  .folder-list-item .fname { font-size: .9rem; font-weight: 500; flex: 1; }
+  .folder-list-item .fcount { font-size: .75rem; color: var(--muted); }
+  .folder-list-item .fdel { background: none; border: none; color: var(--muted); cursor: pointer; font-size: .9rem; padding: 2px 4px; transition: color .15s; }
+  .folder-list-item .fdel:hover { color: var(--danger); }
+  .new-folder-row { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+  .new-folder-row input { flex: 1; padding: 8px 12px; font-size: .85rem; }
+  .new-folder-row button { background: var(--accent); color: #0a0a0a; border: none; padding: 8px 14px; border-radius: 2px; cursor: pointer; font-weight: 700; font-size: .85rem; }
+
+  .gallery-upload-panel { }
+  .gallery-panel-head {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+  }
+  .gallery-panel-head h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+  .gallery-drop {
+    border: 2px dashed var(--border); border-radius: 4px; padding: 32px;
+    text-align: center; cursor: pointer; transition: all .2s; position: relative;
+    background: var(--surface); margin-bottom: 20px;
+  }
+  .gallery-drop:hover, .gallery-drop.dragover { border-color: var(--accent); background: rgba(200,169,110,.04); }
+  .gallery-drop input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .gallery-grid-admin {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px;
+  }
+  .gallery-admin-img {
+    position: relative; aspect-ratio: 1; border-radius: 2px; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .gallery-admin-img img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-admin-img .img-del {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(0,0,0,.7); border: 1px solid rgba(255,255,255,.2);
+    color: #fff; width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+    font-size: .75rem; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .2s;
+  }
+  .gallery-admin-img:hover .img-del { opacity: 1; }
+  .gallery-admin-img .img-name {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,.7); padding: 4px 6px;
+    font-size: .7rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .no-folder-msg { color: var(--muted); text-align: center; padding: 60px 0; font-size: .95rem; }
+
+  /* ── ORDER FORM ── */
+  #order { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  @media (max-width: 768px) { .order-grid { grid-template-columns: 1fr; } }
+  .order-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 900;
+    letter-spacing: -.03em; margin-bottom: 20px;
+  }
+  .order-info p { color: var(--muted); line-height: 1.8; margin-bottom: 32px; }
+  .order-steps { list-style: none; }
+  .order-steps li {
+    display: flex; gap: 16px; align-items: flex-start;
+    margin-bottom: 24px; padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .order-steps li:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(200,169,110,.15); border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem; font-weight: 700; color: var(--accent);
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-text strong { display: block; margin-bottom: 4px; font-weight: 600; }
+  .step-text span { font-size: .85rem; color: var(--muted); }
+
+  /* Form */
+  .order-form-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 40px;
+  }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 32px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+  .form-group { margin-bottom: 20px; }
+  label { display: block; font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  input, select, textarea {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 14px 16px; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: .95rem;
+    transition: border-color .2s; outline: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  select option { background: #111; }
+  textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+  .char-count { text-align: right; font-size: .75rem; color: var(--muted); margin-top: 6px; }
+
+  /* File Upload */
+  .file-drop {
+    border: 2px dashed var(--border); border-radius: 4px;
+    padding: 40px 24px; text-align: center;
+    cursor: pointer; transition: all .2s; position: relative;
+    background: var(--surface);
+  }
+  .file-drop:hover, .file-drop.dragover { border-color: var(--accent); background: rgba(200,169,110,.04); }
+  .file-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .file-icon { font-size: 2rem; margin-bottom: 12px; }
+  .file-drop p { color: var(--muted); font-size: .9rem; }
+  .file-drop strong { color: var(--accent); }
+  .file-list { margin-top: 16px; }
+  .file-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 10px 14px; border-radius: 2px; margin-bottom: 8px;
+    font-size: .85rem;
+  }
+  .file-item-name { display: flex; align-items: center; gap: 10px; }
+  .file-remove { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1rem; padding: 0 4px; }
+  .file-size { color: var(--muted); font-size: .75rem; }
+
+  /* Submit */
+  .btn-submit {
+    width: 100%; background: var(--accent); color: #0a0a0a;
+    border: none; padding: 18px; font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: .08em;
+    text-transform: uppercase; cursor: pointer; border-radius: 2px;
+    transition: all .2s; margin-top: 8px;
+  }
+  .btn-submit:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(200,169,110,.25); }
+  .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 32px; right: 32px; z-index: 9000;
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 16px 24px; border-radius: 4px; font-size: .9rem;
+    transform: translateY(120px); transition: transform .4s cubic-bezier(.16,1,.3,1);
+    min-width: 300px; display: flex; align-items: center; gap: 12px;
+  }
+  .toast.show { transform: translateY(0); }
+  .toast.success { border-color: var(--success); }
+  .toast.error { border-color: var(--danger); }
+  .toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .toast.success .toast-dot { background: var(--success); }
+  .toast.error .toast-dot { background: var(--danger); }
+
+  /* ── ADMIN PANEL ── */
+  #admin-panel {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: var(--bg); overflow-y: auto;
+  }
+  #admin-panel.open { display: block; }
+  .admin-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px; background: var(--surface);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+  }
+  .admin-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; }
+  .admin-title span { color: var(--accent); }
+  .btn-close {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 20px; border-radius: 2px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: .85rem; transition: all .2s;
+  }
+  .btn-close:hover { border-color: var(--danger); color: var(--danger); }
+  .admin-body { padding: 48px; }
+  .admin-tabs { display: flex; gap: 4px; margin-bottom: 40px; border-bottom: 1px solid var(--border); }
+  .tab-btn {
+    background: none; border: none; color: var(--muted);
+    padding: 12px 24px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: .9rem; font-weight: 500; border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: all .2s;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Settings */
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  @media (max-width: 900px) { .settings-grid { grid-template-columns: 1fr; } }
+  .settings-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 32px;
+  }
+  .settings-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 24px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .btn-save {
+    background: var(--accent); color: #0a0a0a; border: none;
+    padding: 12px 28px; border-radius: 2px; font-family: 'DM Sans', sans-serif;
+    font-weight: 700; font-size: .85rem; letter-spacing: .06em;
+    text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: all .2s;
+  }
+  .btn-save:hover { background: var(--accent2); }
+
+  /* Orders Table */
+  .orders-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .orders-count { font-size: .85rem; color: var(--muted); }
+  .orders-table { width: 100%; border-collapse: collapse; }
+  .orders-table th {
+    text-align: left; padding: 12px 16px;
+    font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--border);
+  }
+  .orders-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .9rem; vertical-align: top; }
+  .orders-table tr:hover td { background: rgba(255,255,255,.02); }
+  .status-badge {
+    display: inline-block; padding: 4px 10px; border-radius: 2px;
+    font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  }
+  .status-new { background: rgba(200,169,110,.15); color: var(--accent); }
+  .status-progress { background: rgba(85,196,154,.15); color: var(--success); }
+  .status-done { background: rgba(80,80,80,.3); color: var(--muted); }
+  .order-desc-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: .85rem; }
+  .btn-status {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 5px 12px; border-radius: 2px; cursor: pointer; font-size: .75rem;
+    font-family: 'DM Sans', sans-serif; transition: all .2s;
+  }
+  .btn-status:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-delete {
+    background: none; border: 1px solid transparent; color: var(--muted);
+    padding: 5px 10px; border-radius: 2px; cursor: pointer; font-size: .75rem;
+    margin-left: 4px; transition: all .2s;
+  }
+  .btn-delete:hover { border-color: var(--danger); color: var(--danger); }
+  .no-orders { text-align: center; color: var(--muted); padding: 80px 0; font-size: 1rem; }
+
+  /* Services Editor */
+  .services-editor { display: grid; gap: 16px; }
+  .service-edit-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 24px;
+  }
+  .service-edit-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 12px; align-items: end; }
+  @media (max-width: 700px) { .service-edit-row { grid-template-columns: 1fr; } }
+  .btn-add-service {
+    background: none; border: 1px dashed var(--border); color: var(--muted);
+    padding: 16px; border-radius: 4px; cursor: pointer; width: 100%;
+    font-family: 'DM Sans', sans-serif; font-size: .9rem; transition: all .2s;
+  }
+  .btn-add-service:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-del-service {
+    background: none; border: 1px solid var(--border); color: var(--danger);
+    padding: 12px 14px; border-radius: 2px; cursor: pointer; transition: all .2s;
+  }
+  .btn-del-service:hover { background: rgba(224,85,85,.1); }
+
+  /* Hero editor inputs */
+  .hero-preview-edit { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  @media (max-width: 900px) { .hero-preview-edit { grid-template-columns: 1fr; } }
+
+  /* Login screen */
+  .admin-login {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: var(--bg);
+  }
+  .login-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 48px; width: 380px; max-width: 95vw;
+  }
+  .login-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; margin-bottom: 32px; }
+  .login-logo span { color: var(--accent); }
+
+  /* Modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,.85); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 40px; max-width: 600px; width: 95%;
+    max-height: 80vh; overflow-y: auto;
+  }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 20px; }
+  .modal-detail { margin-bottom: 16px; }
+  .modal-detail strong { display: block; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; }
+  .modal-detail p { color: var(--text); line-height: 1.6; }
+  .modal-files { display: flex; flex-wrap: wrap; gap: 8px; }
+  .modal-file-badge {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 6px 12px; border-radius: 2px; font-size: .8rem; color: var(--accent);
+    cursor: pointer; text-decoration: none; transition: border-color .2s;
+  }
+  .modal-file-badge:hover { border-color: var(--accent); }
+  .modal-footer { display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+  /* Footer */
+  footer {
+    background: var(--surface); border-top: 1px solid var(--border);
+    padding: 48px; text-align: center; color: var(--muted); font-size: .85rem;
+  }
+  footer strong { color: var(--accent); font-family: 'Playfair Display', serif; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-content > * { animation: fadeUp .7s both; }
+  .hero-content > *:nth-child(1) { animation-delay: .1s; }
+  .hero-content > *:nth-child(2) { animation-delay: .2s; }
+  .hero-content > *:nth-child(3) { animation-delay: .3s; }
+  .hero-content > *:nth-child(4) { animation-delay: .4s; }
+  .hero-content > *:nth-child(5) { animation-delay: .5s; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav ul { display: none; }
+    section, .hero { padding-left: 24px; padding-right: 24px; }
+    .admin-body { padding: 24px; }
+    .admin-nav { padding: 16px 24px; }
+    .stats { gap: 24px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Quality<span>Pixels</span></a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#order">Order</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-btn" onclick="openAdmin()">Admin Panel</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <span class="hero-tag" id="hero-tag-display">Professional Photography Services</span>
+    <h1 id="hero-title-display">Every Pixel<br><em>Tells a Story</em></h1>
+    <p class="hero-desc" id="hero-desc-display">We craft visual narratives with precision and artistry. From product photography to event coverage — your vision, perfected.</p>
+    <div class="hero-actions">
+      <a href="#order" class="btn-primary">Place an Order</a>
+      <a href="#services" class="btn-ghost">View Services</a>
+    </div>
+    <div class="stats">
+      <div><div class="stat-num" id="stat1-num">500+</div><div class="stat-label" id="stat1-label">Projects Done</div></div>
+      <div><div class="stat-num" id="stat2-num">98%</div><div class="stat-label" id="stat2-label">Happy Clients</div></div>
+      <div><div class="stat-num" id="stat3-num">12+</div><div class="stat-label" id="stat3-label">Years Experience</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What We Offer</div>
+  <div class="section-title">Our Services</div>
+  <div class="services-grid" id="services-grid"></div>
+</section>
+
+<!-- REFERENCES -->
+<section id="references">
+  <div class="section-label">Our Work</div>
+  <div class="section-title">References</div>
+  <div class="ref-folder-tabs" id="ref-folder-tabs"></div>
+  <div class="ref-gallery-grid" id="ref-gallery-grid"></div>
+</section>
+
+<!-- ORDER -->
+<section id="order">
+  <div class="order-grid">
+    <div class="order-info">
+      <div class="section-label">Get Started</div>
+      <h2>Place Your Order</h2>
+      <p>Fill out the form with your project details and upload any reference files. We'll review your request and get back to you within 24 hours.</p>
+      <ul class="order-steps">
+        <li><div class="step-num">1</div><div class="step-text"><strong>Describe Your Vision</strong><span>Tell us exactly what you need — the more detail, the better.</span></div></li>
+        <li><div class="step-num">2</div><div class="step-text"><strong>Upload References</strong><span>Share any files, mood boards, or examples that inspire you.</span></div></li>
+        <li><div class="step-num">3</div><div class="step-text"><strong>We Confirm & Begin</strong><span>Our team reviews your order and starts working on your project.</span></div></li>
+        <li><div class="step-num">4</div><div class="step-text"><strong>Delivery & Revisions</strong><span>Receive your files and request any adjustments included in your plan.</span></div></li>
+      </ul>
+    </div>
+    <div class="order-form-card">
+      <div class="form-title">New Order Request</div>
+      <div id="order-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" id="f-fname" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" id="f-lname" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" id="f-email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label>Discord Username</label>
+          <input type="text" id="f-discord" placeholder="username#0000">
+        </div>
+        <div class="form-group">
+          <label>Service Type * <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(select one or more)</span></label>
+          <div class="service-checkboxes" id="service-checkboxes"></div>
+          <div class="services-selected-tags" id="services-selected-tags"></div>
+        </div>
+        <div class="form-group">
+          <label>Order Description *</label>
+          <textarea id="f-desc" placeholder="Describe your project in detail. Include style preferences, dimensions, deadlines, quantity, and any other relevant information..." maxlength="2000"></textarea>
+          <div class="char-count"><span id="char-count">0</span>/2000</div>
+        </div>
+        <div class="form-group">
+          <label>Reference Files (optional)</label>
+          <div class="file-drop" id="file-drop">
+            <input type="file" id="file-input" multiple accept="image/*,.pdf,.psd,.ai,.zip">
+            <div class="file-icon">📎</div>
+            <p>Drag & drop files or <strong>click to browse</strong></p>
+            <p style="font-size:.8rem; margin-top:8px;">Images, PDFs, PSD, ZIP — max 20MB per file</p>
+          </div>
+          <div class="file-list" id="file-list"></div>
+        </div>
+        <button class="btn-submit" id="submit-btn" onclick="submitOrder()">Submit Order →</button>
+        <p style="text-align:center; font-size:.78rem; color:var(--muted); margin-top:12px;">Your order will be sent directly to our Discord channel for processing.</p>
+      </div>
+      <div id="order-success" style="display:none; text-align:center; padding:40px 0;">
+        <div style="font-size:3rem; margin-bottom:16px;">✨</div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:12px;">Order Received!</h3>
+        <p style="color:var(--muted); line-height:1.7;">Thank you! Your order has been sent to our team. We'll review it and reach out within 24 hours.</p>
+        <button class="btn-ghost" onclick="resetForm()" style="margin-top:24px;">Place Another Order</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <strong>Quality Pixels</strong>
+  <p style="margin-top:12px;" id="footer-text">Professional photography services — delivering quality, one pixel at a time.</p>
+  <p style="margin-top:8px;" id="footer-contact"></p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1);event.stopPropagation()">‹</button>
+  <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1);event.stopPropagation()">›</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toast-msg"></span>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal">
+    <h3 id="modal-title">Order Details</h3>
+    <div id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-close" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <!-- LOGIN SCREEN -->
+  <div class="admin-login" id="admin-login-screen">
+    <div class="login-card">
+      <div class="login-logo">Quality<span>Pixels</span> Admin</div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="admin-pw" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn-save" style="width:100%; margin-top:8px;" onclick="doLogin()">Access Panel →</button>
+      <p style="margin-top:16px; font-size:.8rem; color:var(--muted); text-align:center;">Default password: <strong style="color:var(--accent)">admin123</strong></p>
+    </div>
+  </div>
+
+  <!-- ADMIN CONTENT -->
+  <div id="admin-content" style="display:none;">
+    <div class="admin-nav">
+      <div class="admin-title">Quality<span>Pixels</span> — Admin</div>
+      <div style="display:flex;gap:12px;">
+        <button class="btn-close" onclick="closeAdmin()">✕ Close Panel</button>
+      </div>
+    </div>
+    <div class="admin-body">
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="showTab('orders')">📋 Orders</button>
+        <button class="tab-btn" onclick="showTab('services')">🎨 Services</button>
+        <button class="tab-btn" onclick="showTab('gallery')">🖼️ Gallery</button>
+        <button class="tab-btn" onclick="showTab('content')">✏️ Content</button>
+        <button class="tab-btn" onclick="showTab('settings')">⚙️ Settings</button>
+      </div>
+
+      <!-- ORDERS TAB -->
+      <div class="tab-content active" id="tab-orders">
+        <div class="orders-header">
+          <div>
+            <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem;">Orders</h2>
+            <div class="orders-count" id="orders-count"></div>
+          </div>
+          <button class="btn-save" onclick="exportOrders()">Export CSV</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="orders-table" id="orders-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Name</th><th>Email</th><th>Service</th>
+                <th>Description</th><th>Files</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+        <div id="no-orders" class="no-orders" style="display:none;">No orders yet. Orders will appear here when customers submit them.</div>
+      </div>
+
+      <!-- SERVICES TAB -->
+      <div class="tab-content" id="tab-services">
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:32px;">Edit Services</h2>
+        <div class="services-editor" id="services-editor"></div>
+        <button class="btn-add-service" onclick="addService()" style="margin-top:16px;">+ Add New Service</button>
+        <button class="btn-save" onclick="saveServices()" style="margin-top:24px; display:block;">Save Services</button>
+      </div>
+
+      <!-- GALLERY TAB -->
+      <div class="tab-content" id="tab-gallery">
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:8px;">Reference Gallery</h2>
+        <p style="color:var(--muted); font-size:.9rem; margin-bottom:32px;">Create folders and upload images that appear in the public References section.</p>
+        <div class="gallery-admin-layout">
+          <!-- Folder sidebar -->
+          <div class="folder-sidebar">
+            <div class="folder-sidebar-head">📁 Folders</div>
+            <div id="admin-folder-list"></div>
+            <div class="new-folder-row">
+              <input type="text" id="new-folder-name" placeholder="Folder name…" onkeydown="if(event.key==='Enter')createFolder()">
+              <button onclick="createFolder()">+</button>
+            </div>
+          </div>
+          <!-- Upload panel -->
+          <div class="gallery-upload-panel">
+            <div id="gallery-no-folder" class="no-folder-msg">← Select or create a folder to upload images</div>
+            <div id="gallery-folder-panel" style="display:none;">
+              <div class="gallery-panel-head">
+                <h3 id="gallery-panel-title">Folder</h3>
+                <span style="color:var(--muted); font-size:.85rem;" id="gallery-panel-count"></span>
+              </div>
+              <div class="gallery-drop" id="gallery-drop">
+                <input type="file" id="gallery-file-input" multiple accept="image/*">
+                <div style="font-size:2rem; margin-bottom:10px;">🖼️</div>
+                <p style="color:var(--muted); font-size:.9rem;">Drag & drop images or <strong style="color:var(--accent)">click to browse</strong></p>
+                <p style="color:var(--muted); font-size:.75rem; margin-top:6px;">JPG, PNG, WEBP, GIF — max 10MB each</p>
+              </div>
+              <div class="gallery-grid-admin" id="gallery-admin-grid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT TAB -->
+      <div class="tab-content" id="tab-content">
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:32px;">Edit Website Content</h2>
+        <div class="hero-preview-edit">
+          <div>
+            <div class="settings-card">
+              <h3>🦸 Hero Section</h3>
+              <div class="form-group"><label>Tag Line</label><input type="text" id="e-tag" placeholder="Professional Photography Services"></div>
+              <div class="form-group"><label>Headline (use | for line break)</label><input type="text" id="e-title" placeholder="Every Pixel|Tells a Story"></div>
+              <div class="form-group"><label>Accent Word (shown in gold)</label><input type="text" id="e-accent" placeholder="Tells a Story"></div>
+              <div class="form-group"><label>Description</label><textarea id="e-desc" style="min-height:80px;"></textarea></div>
+            </div>
+            <div class="settings-card" style="margin-top:20px;">
+              <h3>📊 Stats Bar</h3>
+              <div class="form-row">
+                <div class="form-group"><label>Stat 1 Number</label><input type="text" id="e-s1n" placeholder="500+"></div>
+                <div class="form-group"><label>Stat 1 Label</label><input type="text" id="e-s1l" placeholder="Projects Done"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>Stat 2 Number</label><input type="text" id="e-s2n" placeholder="98%"></div>
+                <div class="form-group"><label>Stat 2 Label</label><input type="text" id="e-s2l" placeholder="Happy Clients"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>Stat 3 Number</label><input type="text" id="e-s3n" placeholder="12+"></div>
+                <div class="form-group"><label>Stat 3 Label</label><input type="text" id="e-s3l" placeholder="Years Experience"></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="settings-card">
+              <h3>🦶 Footer</h3>
+              <div class="form-group"><label>Footer Tagline</label><input type="text" id="e-footer"></div>
+              <div class="form-group"><label>Contact Info</label><input type="text" id="e-contact" placeholder="email@qualitypixels.com"></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-save" onclick="saveContent()" style="margin-top:24px;">Save Content</button>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div class="tab-content" id="tab-settings">
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:32px;">Settings</h2>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3>🔔 Discord Integration</h3>
+            <div class="form-group">
+              <label>Webhook URL</label>
+              <input type="text" id="s-webhook" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <div class="form-group">
+              <label>Bot Name (shown in Discord)</label>
+              <input type="text" id="s-botname" placeholder="Quality Pixels Orders">
+            </div>
+            <button class="btn-save" onclick="saveSettings()">Save</button>
+            <button class="btn-ghost" onclick="testWebhook()" style="margin-left:12px; padding:11px 24px; font-size:.85rem;">Test Webhook</button>
+          </div>
+          <div class="settings-card">
+            <h3>🔐 Security</h3>
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="s-oldpw" placeholder="Current password">
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="s-newpw" placeholder="New password">
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="s-confirmpw" placeholder="Confirm new password">
+            </div>
+            <button class="btn-save" onclick="changePassword()">Change Password</button>
+          </div>
+          <div class="settings-card">
+            <h3>🗑️ Data Management</h3>
+            <p style="color:var(--muted); font-size:.9rem; margin-bottom:20px;">Clear all stored orders from local storage. This cannot be undone.</p>
+            <button style="background:var(--danger);color:#fff;border:none;padding:12px 24px;border-radius:2px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.85rem;" onclick="clearOrders()">Clear All Orders</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let siteData = JSON.parse(localStorage.getItem('qp_site') || 'null') || {
+  adminPass: 'admin123',
+  webhook: '',
+  botName: 'Quality Pixels Orders',
+  hero: { tag:'Professional Photography Services', title:'Every Pixel|Tells a Story', accent:'Tells a Story', desc:'We craft visual narratives with precision and artistry. From product photography to event coverage — your vision, perfected.' },
+  stats: [{ num:'500+', label:'Projects Done' },{ num:'98%', label:'Happy Clients' },{ num:'12+', label:'Years Experience' }],
+  footer: { text:'Professional photography services — delivering quality, one pixel at a time.', contact:'' },
+  gallery: [],
+  services: [
+    { icon:'📸', name:'Product Photography', desc:'High-end product shots for e-commerce, catalogs, and marketing materials.', price:'From $120' },
+    { icon:'🎉', name:'Event Coverage', desc:'Full event documentation with edited galleries delivered in 48 hours.', price:'From $350' },
+    { icon:'✂️', name:'Photo Editing & Retouching', desc:'Professional editing, skin retouching, color grading, and background removal.', price:'From $15/photo' },
+    { icon:'🖼️', name:'Photo Manipulation', desc:'Creative composites, artistic edits, and concept-based visual storytelling.', price:'From $80' },
+    { icon:'🏠', name:'Real Estate Photography', desc:'Interior & exterior shoots with HDR processing, ideal for listings.', price:'From $200' },
+    { icon:'👤', name:'Portrait & Headshots', desc:'Professional portraits for individuals, teams, LinkedIn, and press kits.', price:'From $180' }
+  ]
+};
+let orders = JSON.parse(localStorage.getItem('qp_orders') || '[]');
+let uploadedFiles = []; // {name, size, type, data (base64)}
+let selectedServices = [];
+
+function save() { localStorage.setItem('qp_site', JSON.stringify(siteData)); }
+function saveOrders() { localStorage.setItem('qp_orders', JSON.stringify(orders)); }
+
+// ── RENDER SITE ──
+function renderSite() {
+  const h = siteData.hero;
+  document.getElementById('hero-tag-display').textContent = h.tag;
+  const parts = h.title.split('|');
+  const accented = parts[parts.length-1];
+  document.getElementById('hero-title-display').innerHTML = parts.slice(0,-1).join('<br>') + (parts.length > 1 ? '<br>' : '') + '<em>' + accented + '</em>';
+  document.getElementById('hero-desc-display').textContent = h.desc;
+  const s = siteData.stats;
+  document.getElementById('stat1-num').textContent = s[0].num;
+  document.getElementById('stat1-label').textContent = s[0].label;
+  document.getElementById('stat2-num').textContent = s[1].num;
+  document.getElementById('stat2-label').textContent = s[1].label;
+  document.getElementById('stat3-num').textContent = s[2].num;
+  document.getElementById('stat3-label').textContent = s[2].label;
+  document.getElementById('footer-text').textContent = siteData.footer.text;
+  document.getElementById('footer-contact').textContent = siteData.footer.contact;
+  renderServices();
+  renderServiceCheckboxes();
+}
+
+function renderServices() {
+  const g = document.getElementById('services-grid');
+  g.innerHTML = siteData.services.map(s => `
+    <div class="service-card">
+      <div class="service-icon">${s.icon}</div>
+      <div class="service-name">${s.name}</div>
+      <div class="service-desc">${s.desc}</div>
+      <div class="service-price">${s.price}</div>
+    </div>`).join('');
+}
+
+function renderServiceCheckboxes() {
+  const container = document.getElementById('service-checkboxes');
+  if (!container) return;
+  container.innerHTML = siteData.services.map((s, i) => `
+    <div class="service-check-item" onclick="toggleService(${i})" id="svc-check-${i}">
+      <div class="service-check-box" id="svc-box-${i}"></div>
+      <div>
+        <div class="service-check-label">${s.icon} ${s.name}</div>
+        <div class="service-check-price">${s.price}</div>
+      </div>
+    </div>`).join('');
+  updateServiceTags();
+}
+
+function toggleService(i) {
+  const idx = selectedServices.indexOf(i);
+  if (idx === -1) selectedServices.push(i);
+  else selectedServices.splice(idx, 1);
+  updateServiceTags();
+}
+
+function updateServiceTags() {
+  siteData.services.forEach((s, i) => {
+    const item = document.getElementById('svc-check-' + i);
+    const box = document.getElementById('svc-box-' + i);
+    if (!item) return;
+    const sel = selectedServices.includes(i);
+    item.classList.toggle('selected', sel);
+    box.textContent = sel ? '✓' : '';
+  });
+  const tagsEl = document.getElementById('services-selected-tags');
+  if (tagsEl) {
+    tagsEl.innerHTML = selectedServices.map(i =>
+      `<span class="service-tag">${siteData.services[i].name}</span>`).join('');
+  }
+}
+
+// ── FILE UPLOAD ──
+const fileDrop = document.getElementById('file-drop');
+const fileInput = document.getElementById('file-input');
+fileDrop.addEventListener('dragover', e => { e.preventDefault(); fileDrop.classList.add('dragover'); });
+fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
+fileDrop.addEventListener('drop', e => { e.preventDefault(); fileDrop.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+function handleFiles(files) {
+  const promises = [];
+  for (const f of files) {
+    if (f.size > 20 * 1024 * 1024) { showToast('File too large: ' + f.name + ' (max 20MB)', 'error'); continue; }
+    if (uploadedFiles.find(x => x.name === f.name)) continue;
+    const p = new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        uploadedFiles.push({ name: f.name, size: f.size, type: f.type, data: e.target.result });
+        resolve();
+      };
+      reader.readAsDataURL(f);
+    });
+    promises.push(p);
+  }
+  Promise.all(promises).then(renderFileList);
+}
+
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  list.innerHTML = uploadedFiles.map((f, i) => `
+    <div class="file-item">
+      <div class="file-item-name">📄 <span>${f.name}</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="file-size">${(f.size/1024).toFixed(0)} KB</span>
+        <button class="file-remove" onclick="removeFile(${i})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function removeFile(i) { uploadedFiles.splice(i, 1); renderFileList(); }
+
+// ── CHAR COUNT ──
+document.getElementById('f-desc').addEventListener('input', function() {
+  document.getElementById('char-count').textContent = this.value.length;
+});
+
+// ── ORDER SUBMIT ──
+async function submitOrder() {
+  const fname = document.getElementById('f-fname').value.trim();
+  const lname = document.getElementById('f-lname').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const discord = document.getElementById('f-discord').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
+
+  if (!fname || !lname || !email || !desc) {
+    showToast('Please fill in all required fields.', 'error'); return;
+  }
+  if (selectedServices.length === 0) {
+    showToast('Please select at least one service.', 'error'); return;
+  }
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    showToast('Please enter a valid email address.', 'error'); return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+
+  const serviceNames = selectedServices.map(i => siteData.services[i].name);
+
+  const order = {
+    id: Date.now(),
+    fname, lname, email, discord,
+    service: serviceNames.join(', '),
+    desc,
+    files: uploadedFiles.map(f => ({ name: f.name, size: f.size, type: f.type, data: f.data })),
+    status: 'new',
+    date: new Date().toLocaleDateString('en-GB')
+  };
+
+  orders.unshift(order);
+  saveOrders();
+
+  if (siteData.webhook) await sendToDiscord(order);
+
+  document.getElementById('order-form').style.display = 'none';
+  document.getElementById('order-success').style.display = 'block';
+}
+
+async function sendToDiscord(order) {
+  const embed = {
+    username: siteData.botName || 'Quality Pixels Orders',
+    embeds: [{
+      title: '📸 New Order — ' + order.service,
+      color: 0xC8A96E,
+      fields: [
+        { name: 'Client', value: order.fname + ' ' + order.lname, inline: true },
+        { name: 'Email', value: order.email, inline: true },
+        { name: 'Discord', value: order.discord || '—', inline: true },
+        { name: 'Service', value: order.service, inline: true },
+        { name: 'Date', value: order.date, inline: true },
+        { name: 'Files', value: order.files.length ? order.files.map(f=>f.name).join(', ') : 'None', inline: true },
+        { name: 'Description', value: order.desc.substring(0, 1024) }
+      ],
+      footer: { text: 'Quality Pixels Order System • ID #' + order.id }
+    }]
+  };
+  try {
+    await fetch(siteData.webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(embed) });
+  } catch(e) { console.warn('Discord webhook failed', e); }
+}
+
+function resetForm() {
+  uploadedFiles = [];
+  selectedServices = [];
+  document.getElementById('f-fname').value = '';
+  document.getElementById('f-lname').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-discord').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('char-count').textContent = '0';
+  document.getElementById('file-list').innerHTML = '';
+  document.getElementById('file-input').value = '';
+  renderServiceCheckboxes();
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'Submit Order →';
+  document.getElementById('order-success').style.display = 'none';
+  document.getElementById('order-form').style.display = 'block';
+}
+
+// ── ADMIN ──
+function openAdmin() {
+  document.getElementById('admin-panel').classList.add('open');
+  document.getElementById('admin-login-screen').style.display = 'flex';
+  document.getElementById('admin-content').style.display = 'none';
+  document.getElementById('admin-pw').value = '';
+  setTimeout(() => document.getElementById('admin-pw').focus(), 100);
+}
+
+function doLogin() {
+  if (document.getElementById('admin-pw').value === siteData.adminPass) {
+    document.getElementById('admin-login-screen').style.display = 'none';
+    document.getElementById('admin-content').style.display = 'block';
+    renderAdminOrders();
+    renderAdminServices();
+    renderAdminFolders();
+    loadContentEditor();
+    loadSettingsEditor();
+    setTimeout(setupGalleryDrop, 50);
+  } else {
+    showToast('Incorrect password.', 'error');
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('admin-panel').classList.remove('open');
+}
+
+function showTab(name) {
+  const names = ['orders','services','gallery','content','settings'];
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', names[i] === name));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'orders') renderAdminOrders();
+  if (name === 'gallery') renderAdminFolders();
+}
+
+// ── ADMIN: ORDERS ──
+function renderAdminOrders() {
+  const tbody = document.getElementById('orders-tbody');
+  const noOrders = document.getElementById('no-orders');
+  const table = document.getElementById('orders-table');
+  document.getElementById('orders-count').textContent = orders.length + ' total order(s)';
+  if (!orders.length) { table.style.display = 'none'; noOrders.style.display = 'block'; return; }
+  table.style.display = 'table'; noOrders.style.display = 'none';
+  tbody.innerHTML = orders.map((o, i) => `
+    <tr>
+      <td style="color:var(--muted); font-size:.8rem;">#${String(i+1).padStart(3,'0')}</td>
+      <td><strong>${o.fname} ${o.lname}</strong><br><span style="color:var(--muted);font-size:.8rem;">${o.date}</span></td>
+      <td style="color:var(--muted); font-size:.85rem;">${o.email}</td>
+      <td style="font-size:.85rem;">${o.service}</td>
+      <td><div class="order-desc-cell">${o.desc}</div></td>
+      <td style="color:var(--muted);font-size:.8rem;">${o.files && o.files.length ? o.files.length + ' file(s)' : '—'}</td>
+      <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+      <td>
+        <button class="btn-status" onclick="viewOrder(${i})">View</button>
+        <button class="btn-status" onclick="cycleStatus(${i})">Status</button>
+        <button class="btn-delete" onclick="deleteOrder(${i})">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+function viewOrder(i) {
+  const o = orders[i];
+  document.getElementById('modal-title').textContent = 'Order — ' + o.fname + ' ' + o.lname;
+  const filesHtml = o.files && o.files.length
+    ? `<div class="modal-detail"><strong>Attached Files</strong><div class="modal-files">${
+        o.files.map(f => {
+          const name = typeof f === 'string' ? f : f.name;
+          const data = typeof f === 'object' && f.data ? f.data : null;
+          if (data) {
+            return `<a class="modal-file-badge" href="${data}" download="${name}" title="Download ${name}">⬇ ${name}</a>`;
+          }
+          return `<span class="modal-file-badge" style="color:var(--muted);">📄 ${name}</span>`;
+        }).join('')
+      }</div></div>`
+    : '';
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-detail"><strong>Services</strong><p>${o.service}</p></div>
+    <div class="modal-detail"><strong>Email</strong><p>${o.email}</p></div>
+    <div class="modal-detail"><strong>Discord</strong><p>${o.discord || '—'}</p></div>
+    <div class="modal-detail"><strong>Date</strong><p>${o.date}</p></div>
+    <div class="modal-detail"><strong>Status</strong><p><span class="status-badge status-${o.status}">${o.status}</span></p></div>
+    <div class="modal-detail"><strong>Description</strong><p>${o.desc}</p></div>
+    ${filesHtml}
+  `;
+  document.getElementById('order-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('order-modal').classList.remove('open'); }
+
+function cycleStatus(i) {
+  const cycle = ['new','progress','done'];
+  const cur = cycle.indexOf(orders[i].status);
+  orders[i].status = cycle[(cur+1) % cycle.length];
+  saveOrders(); renderAdminOrders();
+}
+
+function deleteOrder(i) {
+  if (!confirm('Delete this order?')) return;
+  orders.splice(i, 1); saveOrders(); renderAdminOrders();
+}
+
+function clearOrders() {
+  if (!confirm('Clear ALL orders? This cannot be undone.')) return;
+  orders = []; saveOrders(); renderAdminOrders(); showToast('All orders cleared.');
+}
+
+function exportOrders() {
+  const headers = ['#','Name','Email','Discord','Service','Description','Files','Status','Date'];
+  const rows = orders.map((o,i) => [i+1, `${o.fname} ${o.lname}`, o.email, o.discord, o.service, `"${o.desc.replace(/"/g,'""')}"`, (o.files||[]).map(f=>typeof f==='string'?f:f.name).join(';'), o.status, o.date]);
+  const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'quality-pixels-orders.csv'; a.click();
+}
+
+// ── ADMIN: SERVICES ──
+function renderAdminServices() {
+  document.getElementById('services-editor').innerHTML = siteData.services.map((s,i) => `
+    <div class="service-edit-card">
+      <div class="service-edit-row">
+        <div class="form-group" style="margin:0">
+          <label>Service Name</label>
+          <input type="text" value="${s.name}" oninput="siteData.services[${i}].name=this.value">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label>Price</label>
+          <input type="text" value="${s.price}" oninput="siteData.services[${i}].price=this.value">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label>Icon (emoji)</label>
+          <input type="text" value="${s.icon}" oninput="siteData.services[${i}].icon=this.value" style="font-size:1.2rem;">
+        </div>
+        <button class="btn-del-service" onclick="removeService(${i})">🗑</button>
+      </div>
+      <div class="form-group" style="margin-top:12px; margin-bottom:0;">
+        <label>Description</label>
+        <input type="text" value="${s.desc}" oninput="siteData.services[${i}].desc=this.value">
+      </div>
+    </div>`).join('');
+}
+
+function addService() {
+  siteData.services.push({ icon:'📷', name:'New Service', desc:'Service description here.', price:'From $0' });
+  renderAdminServices();
+}
+
+function removeService(i) {
+  if (!confirm('Remove this service?')) return;
+  siteData.services.splice(i, 1); renderAdminServices();
+}
+
+function saveServices() { save(); renderSite(); showToast('Services saved!'); }
+
+// ── ADMIN: CONTENT ──
+function loadContentEditor() {
+  const h = siteData.hero;
+  document.getElementById('e-tag').value = h.tag;
+  document.getElementById('e-title').value = h.title;
+  document.getElementById('e-accent').value = h.accent;
+  document.getElementById('e-desc').value = h.desc;
+  const s = siteData.stats;
+  document.getElementById('e-s1n').value = s[0].num; document.getElementById('e-s1l').value = s[0].label;
+  document.getElementById('e-s2n').value = s[1].num; document.getElementById('e-s2l').value = s[1].label;
+  document.getElementById('e-s3n').value = s[2].num; document.getElementById('e-s3l').value = s[2].label;
+  document.getElementById('e-footer').value = siteData.footer.text;
+  document.getElementById('e-contact').value = siteData.footer.contact;
+}
+
+function saveContent() {
+  siteData.hero = {
+    tag: document.getElementById('e-tag').value,
+    title: document.getElementById('e-title').value,
+    accent: document.getElementById('e-accent').value,
+    desc: document.getElementById('e-desc').value
+  };
+  siteData.stats = [
+    { num: document.getElementById('e-s1n').value, label: document.getElementById('e-s1l').value },
+    { num: document.getElementById('e-s2n').value, label: document.getElementById('e-s2l').value },
+    { num: document.getElementById('e-s3n').value, label: document.getElementById('e-s3l').value }
+  ];
+  siteData.footer = { text: document.getElementById('e-footer').value, contact: document.getElementById('e-contact').value };
+  save(); renderSite(); showToast('Content saved!');
+}
+
+// ── ADMIN: SETTINGS ──
+function loadSettingsEditor() {
+  document.getElementById('s-webhook').value = siteData.webhook || '';
+  document.getElementById('s-botname').value = siteData.botName || 'Quality Pixels Orders';
+}
+
+function saveSettings() {
+  siteData.webhook = document.getElementById('s-webhook').value.trim();
+  siteData.botName = document.getElementById('s-botname').value.trim();
+  save(); showToast('Settings saved!');
+}
+
+async function testWebhook() {
+  const wh = document.getElementById('s-webhook').value.trim();
+  if (!wh) { showToast('Please enter a webhook URL first.', 'error'); return; }
+  try {
+    await fetch(wh, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ username: 'Quality Pixels', content: '✅ Webhook test successful! Your order notifications are working correctly.' }) });
+    showToast('Test message sent to Discord!');
+  } catch(e) { showToast('Webhook failed. Check the URL.', 'error'); }
+}
+
+function changePassword() {
+  const old = document.getElementById('s-oldpw').value;
+  const nw = document.getElementById('s-newpw').value;
+  const cf = document.getElementById('s-confirmpw').value;
+  if (old !== siteData.adminPass) { showToast('Current password is incorrect.', 'error'); return; }
+  if (!nw || nw.length < 4) { showToast('New password must be at least 4 characters.', 'error'); return; }
+  if (nw !== cf) { showToast('Passwords do not match.', 'error'); return; }
+  siteData.adminPass = nw; save();
+  document.getElementById('s-oldpw').value = ''; document.getElementById('s-newpw').value = ''; document.getElementById('s-confirmpw').value = '';
+  showToast('Password changed successfully!');
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.className = 'toast ' + type;
+  clearTimeout(toastTimer);
+  setTimeout(() => t.classList.add('show'), 10);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── GALLERY: PUBLIC ──
+let activeRefFolder = 0;
+
+function renderPublicGallery() {
+  const folders = siteData.gallery || [];
+  const tabsEl = document.getElementById('ref-folder-tabs');
+  const gridEl = document.getElementById('ref-gallery-grid');
+  if (!tabsEl || !gridEl) return;
+
+  if (!folders.length) {
+    tabsEl.innerHTML = '';
+    gridEl.innerHTML = '<div class="ref-empty">No reference images yet.</div>';
+    return;
+  }
+
+  if (activeRefFolder >= folders.length) activeRefFolder = 0;
+
+  tabsEl.innerHTML = folders.map((f, i) => `
+    <button class="ref-folder-tab ${i === activeRefFolder ? 'active' : ''}" onclick="switchRefFolder(${i})">
+      📁 ${f.name}
+      <span class="folder-count">${(f.images||[]).length}</span>
+    </button>`).join('');
+
+  const folder = folders[activeRefFolder];
+  const imgs = folder.images || [];
+  if (!imgs.length) {
+    gridEl.innerHTML = '<div class="ref-empty">No images in this folder yet.</div>';
+    return;
+  }
+  gridEl.innerHTML = imgs.map((img, i) => `
+    <div class="ref-img-wrap" onclick="openLightbox(${activeRefFolder}, ${i})">
+      <img src="${img.data}" alt="${img.name}" loading="lazy">
+      <div class="ref-img-overlay"><span>🔍 View</span></div>
+    </div>`).join('');
+}
+
+function switchRefFolder(i) {
+  activeRefFolder = i;
+  renderPublicGallery();
+}
+
+// ── LIGHTBOX ──
+let lbFolder = 0, lbIndex = 0;
+
+function openLightbox(folderIdx, imgIdx) {
+  lbFolder = folderIdx; lbIndex = imgIdx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.addEventListener('keydown', lightboxKey);
+}
+
+function updateLightbox() {
+  const imgs = siteData.gallery[lbFolder]?.images || [];
+  const img = imgs[lbIndex];
+  if (!img) return;
+  document.getElementById('lightbox-img').src = img.data;
+  document.getElementById('lightbox-caption').textContent =
+    `${siteData.gallery[lbFolder].name}  •  ${img.name}  •  ${lbIndex + 1} / ${imgs.length}`;
+}
+
+function lightboxNav(dir) {
+  const imgs = siteData.gallery[lbFolder]?.images || [];
+  lbIndex = (lbIndex + dir + imgs.length) % imgs.length;
+  updateLightbox();
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  if (!e) { document.getElementById('lightbox').classList.remove('open'); document.removeEventListener('keydown', lightboxKey); return; }
+  document.getElementById('lightbox').classList.remove('open');
+  document.removeEventListener('keydown', lightboxKey);
+}
+
+function lightboxKey(e) {
+  if (e.key === 'ArrowRight') lightboxNav(1);
+  if (e.key === 'ArrowLeft') lightboxNav(-1);
+  if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.removeEventListener('keydown', lightboxKey); }
+}
+
+// ── GALLERY: ADMIN ──
+let activeAdminFolder = -1;
+
+function renderAdminFolders() {
+  if (!siteData.gallery) siteData.gallery = [];
+  const list = document.getElementById('admin-folder-list');
+  list.innerHTML = siteData.gallery.map((f, i) => `
+    <div class="folder-list-item ${i === activeAdminFolder ? 'active' : ''}" onclick="selectAdminFolder(${i})">
+      <span style="font-size:.9rem;">📁</span>
+      <span class="fname">${f.name}</span>
+      <span class="fcount">${(f.images||[]).length}</span>
+      <button class="fdel" onclick="deleteFolder(${i});event.stopPropagation();" title="Delete folder">🗑</button>
+    </div>`).join('');
+
+  if (activeAdminFolder >= 0 && activeAdminFolder < siteData.gallery.length) {
+    showAdminFolderPanel(activeAdminFolder);
+  }
+}
+
+function selectAdminFolder(i) {
+  activeAdminFolder = i;
+  renderAdminFolders();
+  showAdminFolderPanel(i);
+}
+
+function showAdminFolderPanel(i) {
+  const f = siteData.gallery[i];
+  document.getElementById('gallery-no-folder').style.display = 'none';
+  document.getElementById('gallery-folder-panel').style.display = 'block';
+  document.getElementById('gallery-panel-title').textContent = '📁 ' + f.name;
+  renderAdminGalleryGrid(i);
+}
+
+function renderAdminGalleryGrid(folderIdx) {
+  const f = siteData.gallery[folderIdx];
+  const count = (f.images||[]).length;
+  document.getElementById('gallery-panel-count').textContent = count + ' image' + (count !== 1 ? 's' : '');
+  const grid = document.getElementById('gallery-admin-grid');
+  grid.innerHTML = (f.images||[]).map((img, i) => `
+    <div class="gallery-admin-img">
+      <img src="${img.data}" alt="${img.name}">
+      <button class="img-del" onclick="deleteGalleryImage(${folderIdx}, ${i})" title="Remove">✕</button>
+      <div class="img-name">${img.name}</div>
+    </div>`).join('');
+}
+
+function createFolder() {
+  const inp = document.getElementById('new-folder-name');
+  const name = inp.value.trim();
+  if (!name) { showToast('Enter a folder name.', 'error'); return; }
+  if (siteData.gallery.find(f => f.name.toLowerCase() === name.toLowerCase())) {
+    showToast('Folder already exists.', 'error'); return;
+  }
+  siteData.gallery.push({ name, images: [] });
+  inp.value = '';
+  save();
+  activeAdminFolder = siteData.gallery.length - 1;
+  renderAdminFolders();
+  selectAdminFolder(activeAdminFolder);
+  renderPublicGallery();
+  showToast('Folder "' + name + '" created!');
+}
+
+function deleteFolder(i) {
+  if (!confirm('Delete folder "' + siteData.gallery[i].name + '" and all its images?')) return;
+  siteData.gallery.splice(i, 1);
+  if (activeAdminFolder >= siteData.gallery.length) activeAdminFolder = siteData.gallery.length - 1;
+  save();
+  renderAdminFolders();
+  if (activeAdminFolder >= 0) selectAdminFolder(activeAdminFolder);
+  else { document.getElementById('gallery-no-folder').style.display = 'block'; document.getElementById('gallery-folder-panel').style.display = 'none'; }
+  renderPublicGallery();
+  showToast('Folder deleted.');
+}
+
+function deleteGalleryImage(folderIdx, imgIdx) {
+  siteData.gallery[folderIdx].images.splice(imgIdx, 1);
+  save();
+  renderAdminGalleryGrid(folderIdx);
+  renderAdminFolders();
+  renderPublicGallery();
+  showToast('Image removed.');
+}
+
+// Gallery drag-and-drop setup (runs after DOM ready)
+function setupGalleryDrop() {
+  const drop = document.getElementById('gallery-drop');
+  const inp = document.getElementById('gallery-file-input');
+  if (!drop || !inp) return;
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('dragover'); handleGalleryFiles(e.dataTransfer.files); });
+  inp.addEventListener('change', () => handleGalleryFiles(inp.files));
+}
+
+function handleGalleryFiles(files) {
+  if (activeAdminFolder < 0) { showToast('Select a folder first.', 'error'); return; }
+  const promises = [];
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) { showToast(f.name + ' is not an image.', 'error'); continue; }
+    if (f.size > 10 * 1024 * 1024) { showToast(f.name + ' exceeds 10MB.', 'error'); continue; }
+    const p = new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        siteData.gallery[activeAdminFolder].images.push({ name: f.name, data: e.target.result });
+        resolve();
+      };
+      reader.readAsDataURL(f);
+    });
+    promises.push(p);
+  }
+  Promise.all(promises).then(() => {
+    save();
+    renderAdminGalleryGrid(activeAdminFolder);
+    renderAdminFolders();
+    renderPublicGallery();
+    document.getElementById('gallery-file-input').value = '';
+    showToast(promises.length + ' image(s) uploaded!');
+  });
+}
+
+// ── INIT ──
+renderSite();
+renderPublicGallery();
+setTimeout(setupGalleryDrop, 100);
+</script>
+</body>
+</html>
